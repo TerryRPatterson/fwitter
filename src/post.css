@@ -1,0 +1,21 @@
+
+.post {
+    border-color: black;
+    border-style: double;
+    border-width: thin;
+    display: flex;
+    width: 500px;
+    max-width: 80%;
+    margin: 5px;
+    min-height: 90px;
+}
+.post-body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+}
+.post hr{
+    width: 100%;
+}

@@ -1,0 +1,19 @@
+import React from "react";
+import "./userPicture.css";
+
+let createElement = React.createElement;
+let testingData = {
+    Terry:"https://lh3.googleusercontent.com/xZX2ZH0N1IUEd8RmH2wMI1w9LZ8MkXZIHsdvmftlj88IBuisYBSe7QzrJ3H3HlfuBBqrDjXLIIId_PoC1_CLtA42_dCMOHWwexzp9jf7Y2WwY3FsaxM969XrrKe46r2E0FgGP7cqq1FGlM--GJXMoL8LDAgwZn0WMaUZABB442vsztxJo7DLAyri2tMpfM5pQT9z0BOnxiUSL1VluMNBG17QtbXfDzNYbOp-dKmPi2mojjMnDy0ARr_J-H5IoobRpqfyOct7odjbzzGFJdFPb0B9qsJVfxAsaUUn1O_3oi1HGb9B7eOL7K7h8Gi6pHUPwVDzBKnXpRT7RRMzLjCgv48PeKdfBpD-VkrkPc0Y1R7CNndoKBUY18bZmW4ph0CrbihgzXWDmNAO_AuWtjluE5_X86JXFjW61a_NB1ome2tUwBom65RdpaOYvqtZafPRurccWKPoJ6tQTPs9Tp_IHOuG8tusTZ6ycPZAyPiR51leaGFi5foZN4dVJfwV7L4Rd8DFvwilPW-2kQWNeVmc1Dm20NiTsJyTKO-DZaEwVMh7PHZ6UfiVMzmEgbdVYX6itjJHgKVWAwvaUXF9GA9rsUKZ3nDs5-bsNzHPSNtUKNgqgWEgmX4jfYSwap2t1kXeBUUzx3dVpkGSGpu0SFMGXBzqpmbUp0Mq=w749-h562-no",
+    Katp:"http://icons.iconarchive.com/icons/iconsmind/outline/512/Cat-icon.png",
+    Titan:"https://lh3.googleusercontent.com/mRlp-0eRCya3_OSt5sKlJ5rX546lFJTwXcV3hS5MPYtMujFl4tQ7ZrfeNrUkSwnx6TAgko5kJQ1goDavXoxI0mofcQ6eRnVTnFRB20lrgFNNbvaQ4kxSLZcAM3_IlrzNaUN21DbHPPUG0XEOYvUp9JbrLa5psljMdkCbuLWOQGktMQhITWMQljq0-wigq-uH5QD4F2O2xO06nbvuKo-meHdM3tzYaU-A4LenXpSH49hr5M98TnDiUnSkotc1cOmDtzUe7U1kRQWOLiv0AT4HUJvJxF79_Kd3Vb9VMoyHCRgIpKpKpkIu99qpTsQnAo7ZV7owaLNzYcRsUXJR3FmPlGoL89poyqgXyo8_TFoglmj-5MIQh_G6cv-uBfPQdneGsWjql9upDmGwUzQWluvloKySoAYm7Z0nLKNlteutHkZ7dXD4iGt0yyiJH18Yc98-WdjR1lTYo1UzihurYQ6MPH0bvC9Hm-J0iIvMKmfKIqbecVbv8F-x5J0Bc0ngg6XHoqi0QDiCMlTVslyKOvZDW-hGIVs9HIDYOkj4qdoSMBl_B7VOmtSwXDzWWavQMInwflDZyPFcQWKGCzC9gHiqedenEgcVVUw2BfsRfBuxgCkIemvfV5MsTNPVBwzH5M4wbFBQcUVal1LYUliFrG6cMANbpDnZwvCu=w422-h562-no"
+};
+
+let getPicture = (name) => {
+    return testingData[name];
+};
+
+let picture = ({name}) => {
+    let picture = getPicture(name);
+    return createElement("img", {src:picture, className:"portrait"});
+};
+export default picture;

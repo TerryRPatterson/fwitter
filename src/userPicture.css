@@ -1,0 +1,4 @@
+.portrait {
+    max-width: 20%;
+    object-fit: contain;
+}

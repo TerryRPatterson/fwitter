@@ -1,0 +1,49 @@
+@-webkit-keyframes tux-loading-indicator-spin {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes tux-loading-indicator-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+/*Make sure to add fallback gif later*/
+.tux-loading-indicator {
+	-webkit-animation-duration: 1.5s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: tux-loading-indicator-spin;
+	-webkit-animation-timing-function: linear;
+	animation-duration: 1.5s;
+	animation-iteration-count: infinite;
+	animation-name: tux-loading-indicator-spin;
+	animation-timing-function: linear;
+	backface-visibility: hidden;
+	float: left;
+	height: 34px;
+	width: 34px;
+}
+
+
+.loading-path1 {
+    color:#000000;
+    fill:#000000;
+    fill-opacity:0.08333333;
+    stroke:#565656;
+    stroke-width:0.5;
+    stroke-opacity:0.19607843;
+}
+
+.loading-path2 {
+    fill:none;
+    stroke:#3366bb;
+    stroke-width:2.2583456;
+    stroke-linecap:round;
+}
