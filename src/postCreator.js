@@ -1,8 +1,11 @@
 import React, {Component} from "react";
 import uuid from "uuid/v4";
 import moment from "moment";
+// import {connect} from "react-redux";
 
 let createElement = React.createElement;
+
+// let mapStateToProps = (state, props) => {
 
 
 class postCreator extends Component{

@@ -2,19 +2,41 @@ import React from "react";
 import logo from "./logo.svg";
 import postList from "./postList";
 import "./App.css";
-
+import {createStore} from "redux";
+import postReducer from "./postReducer";
+import uiReducer from "./uiReducer";
+import {Provider} from "react-redux";
 
 const createElement = React.createElement;
 
+const testingData = {"adf80ea7-c250-46d0-a91d-c813f972f4ce":{"author":"Terry","text":"Testing","timestamp":"2018-04-18T15:38:33.227Z","id":"adf80ea7-c250-46d0-a91d-c813f972f4ce"},
+    "21852872-e778-4ef9-98a0-3ea7d4b21954":{"author":"Katp","text":"Hello","timestamp":"2018-04-18T15:38:33.229Z","id":"21852872-e778-4ef9-98a0-3ea7d4b21954"},
+    "49f72dd9-9b74-4eed-9224-43127c225adb":{"author":"Titan","text":"Anyone avalible for walks","timestamp":"2018-04-18T15:38:33.229Z","id":"49f72dd9-9b74-4eed-9224-43127c225adb"}};
+const author = "Titan";
+const intialTestingState = {author:author,data:testingData};
+let reducer = (oldState=intialTestingState, action) => {
+    let type = action["type"];
+    if (type.startsWith("post/")) {
+        return postReducer(oldState,action);
+    }
+    else if (type.startsWith("ui/")) {
+        return uiReducer(oldState,action);
+    }
+};
+
+
+const store = createStore(reducer);
+
 let reset = () => {
-    let testingData = [{"author":"Terry","text":"Testing","timestamp":"2018-04-18T15:38:33.227Z","id":"adf80ea7-c250-46d0-a91d-c813f972f4ce"},
-        {"author":"Katp","text":"Hello","timestamp":"2018-04-18T15:38:33.229Z","id":"21852872-e778-4ef9-98a0-3ea7d4b21954"},
-        {"author":"Titan","text":"Anyone avalible for walks","timestamp":"2018-04-18T15:38:33.229Z","id":"49f72dd9-9b74-4eed-9224-43127c225adb"}];
+    let testingData = {"adf80ea7-c250-46d0-a91d-c813f972f4ce":{"author":"Terry","text":"Testing","timestamp":"2018-04-18T15:38:33.227Z","id":"adf80ea7-c250-46d0-a91d-c813f972f4ce"},
+        "21852872-e778-4ef9-98a0-3ea7d4b21954":{"author":"Katp","text":"Hello","timestamp":"2018-04-18T15:38:33.229Z","id":"21852872-e778-4ef9-98a0-3ea7d4b21954"},
+        "49f72dd9-9b74-4eed-9224-43127c225adb":{"author":"Titan","text":"Anyone avalible for walks","timestamp":"2018-04-18T15:38:33.229Z","id":"49f72dd9-9b74-4eed-9224-43127c225adb"}};
     let author = "Titan";
     window.localStorage.setItem("testingData",JSON.stringify(testingData));
     window.localStorage.setItem("currentUser",author);
     window.location.reload();
 };
+
 let App = () => {
     let testingData = JSON.parse(window.localStorage.getItem("testingData"));
     //Make sure to use jwt.decode when implementing backend
@@ -30,8 +52,10 @@ let App = () => {
                             onClick:reset, value:"reset"})
                     ])
             ]),
-            createElement(postList,{state:
-                {postList:testingData}, user:currentUser, key:"screen"})
+            createElement(Provider,{store:store},
+                createElement(postList,{state:
+                    {postList:testingData}, user:currentUser, key:"screen"})
+            )
         ])
     );
 
