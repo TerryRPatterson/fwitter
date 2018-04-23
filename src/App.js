@@ -7,54 +7,53 @@ import postReducer from "./postReducer";
 import uiReducer from "./uiReducer";
 import {Provider} from "react-redux";
 
+
 const createElement = React.createElement;
 
-const testingData = {"adf80ea7-c250-46d0-a91d-c813f972f4ce":{"author":"Terry","text":"Testing","timestamp":"2018-04-18T15:38:33.227Z","id":"adf80ea7-c250-46d0-a91d-c813f972f4ce"},
-    "21852872-e778-4ef9-98a0-3ea7d4b21954":{"author":"Katp","text":"Hello","timestamp":"2018-04-18T15:38:33.229Z","id":"21852872-e778-4ef9-98a0-3ea7d4b21954"},
-    "49f72dd9-9b74-4eed-9224-43127c225adb":{"author":"Titan","text":"Anyone avalible for walks","timestamp":"2018-04-18T15:38:33.229Z","id":"49f72dd9-9b74-4eed-9224-43127c225adb"}};
-const author = "Titan";
-const intialTestingState = {author:author,data:testingData};
+const intialTestingState =  {
+    user:"Titan",
+    postCreatorField:"",
+    posts:{"adf80ea7-c250-46d0-a91d-c813f972f4ce":{"author":"Terry","text":"Testing","timestamp":"2018-04-18T15:38:33.227Z","id":"adf80ea7-c250-46d0-a91d-c813f972f4ce"},
+        "21852872-e778-4ef9-98a0-3ea7d4b21954":{"author":"Katp","text":"Hello","timestamp":"2018-04-18T15:38:33.229Z","id":"21852872-e778-4ef9-98a0-3ea7d4b21954"},
+        "49f72dd9-9b74-4eed-9224-43127c225adb":{"author":"Titan","text":"Anyone avalible for walks","timestamp":"2018-04-18T15:38:33.229Z","id":"49f72dd9-9b74-4eed-9224-43127c225adb"}}};
+
+let reducerRouter = {
+    "post/":postReducer,
+    "ui/":uiReducer,
+    "default":(state) => state
+};
+let determineReducer = (type) => {
+    for (let routePrefix in reducerRouter) {
+        if (type.startsWith(routePrefix)) {
+            return reducerRouter[routePrefix];
+        }
+    }
+    return reducerRouter["default"];
+};
+
+
 let reducer = (oldState=intialTestingState, action) => {
     let type = action["type"];
-    if (type.startsWith("post/")) {
-        return postReducer(oldState,action);
-    }
-    else if (type.startsWith("ui/")) {
-        return uiReducer(oldState,action);
-    }
+    return determineReducer(type)(oldState,action);
 };
 
+//                                  /*Make sure to remove in production*/
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__
+    && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const store = createStore(reducer);
-
-let reset = () => {
-    let testingData = {"adf80ea7-c250-46d0-a91d-c813f972f4ce":{"author":"Terry","text":"Testing","timestamp":"2018-04-18T15:38:33.227Z","id":"adf80ea7-c250-46d0-a91d-c813f972f4ce"},
-        "21852872-e778-4ef9-98a0-3ea7d4b21954":{"author":"Katp","text":"Hello","timestamp":"2018-04-18T15:38:33.229Z","id":"21852872-e778-4ef9-98a0-3ea7d4b21954"},
-        "49f72dd9-9b74-4eed-9224-43127c225adb":{"author":"Titan","text":"Anyone avalible for walks","timestamp":"2018-04-18T15:38:33.229Z","id":"49f72dd9-9b74-4eed-9224-43127c225adb"}};
-    let author = "Titan";
-    window.localStorage.setItem("testingData",JSON.stringify(testingData));
-    window.localStorage.setItem("currentUser",author);
-    window.location.reload();
-};
 
 let App = () => {
-    let testingData = JSON.parse(window.localStorage.getItem("testingData"));
     //Make sure to use jwt.decode when implementing backend
-    let currentUser = window.localStorage.getItem("currentUser");
     return (
         createElement("section",{className:"App",key:"mainAppDiv"},[
             createElement("header", {className:"App-header",key:"header"},[
                 createElement("img",
                     {src:logo, className:"App-logo", alt:"logo", key:"logo"}),
                 createElement("h1" ,{className:"App-title", key:"title"},
-                    ["Welcome to postter",
-                        createElement("input",{type:"button", key:"reset",
-                            onClick:reset, value:"reset"})
-                    ])
+                    "Welcome to postter")
             ]),
-            createElement(Provider,{store:store},
-                createElement(postList,{state:
-                    {postList:testingData}, user:currentUser, key:"screen"})
+            createElement(Provider,{store:store, key:"Provider"},
+                createElement(postList,{key:"screen"})
             )
         ])
     );

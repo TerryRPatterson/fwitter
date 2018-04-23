@@ -1,5 +1,5 @@
 import React from "react";
-import "./loading.css"
+import "./loading.css";
 
 let loading = () =>
     <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"

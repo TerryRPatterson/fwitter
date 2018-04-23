@@ -1,51 +1,54 @@
-import React, {Component} from "react";
+import React from "react";
 import uuid from "uuid/v4";
 import moment from "moment";
-// import {connect} from "react-redux";
 
+import {connect} from "react-redux";
+const enterKeyCode = 13
 let createElement = React.createElement;
 
-// let mapStateToProps = (state, props) => {
+let mapStateToProps = (state) => {
+    let newProps = {};
+    newProps["text"] = state["postCreatorField"];
+    newProps["user"] = state["user"];
+    return newProps;
+};
 
 
-class postCreator extends Component{
-    constructor({state,props, updatePostList, user}){
-        super(props);
-        this.state = state || {text:""};
-        this.user = user;
-        this.updatePostList = updatePostList;
-    }
-    onTextEntry(event){
-        let text = event.target.value;
-        this.setState({text:text});
-    }
-    post(){
-        let testingData = JSON.parse(window.localStorage.getItem("testingData"));
+
+let postCreator = ({text, user, dispatch}) => {
+    let onTextEntry = (event) =>{
+        let newText = event.target.value;
+        dispatch({type:"ui/postCreatorField", fieldValue:newText});
+    };
+    let post = () => {
         let post = {
-            author:this.user,
+            author:user,
             id:uuid(),
             timestamp:moment(),
-            text:this.state["text"]
+            text:text
         };
-        testingData.push(post);
-        window.localStorage.setItem("testingData",JSON.stringify(testingData));
-        this.setState({text:""});
-        this.updatePostList(post);
-    }
-    render(){
-        return createElement("form", {className:"editor",key:"editor"},[
-            createElement("textarea",{key:"textEntryField",
-                onChange:this.onTextEntry.bind(this), value:this.state["text"],
-                onKeyDown:(event) => {
-                    if (event.keyCode === 13 && !event.shiftKey){
-                        this.post();
-                    }
-                }
-            }),
-            createElement("input",{key:"postButton",type:"button",
-                onClick:this.post.bind(this), value:"Post"})
-        ]);
-    }
-}
+        dispatch({type:"post/create",post:post});
+    };
+    return createElement("div", {className:"editor",key:"editor"},[
+        createElement("textarea",{key:"textEntryField",
+            value:text, onChange:(event) => {
 
-export default postCreator;
+                if (event.keyCode !== enterKeyCode
+                    || (event.keyCode === enterKeyCode && event.shiftKey)){
+                    onTextEntry(event);
+                }
+            },
+            onKeyDown:(event) => {
+                if (event.keyCode === enterKeyCode && !event.shiftKey){
+                    event.preventDefault();
+                    post();
+                }
+            }
+        }),
+        createElement("input",{key:"postButton",type:"button",
+            onClick:post, value:"Post"})
+    ]);
+};
+
+let connectedCreator = connect(mapStateToProps)(postCreator);
+export default connectedCreator;

@@ -6,6 +6,7 @@ let uiReducer = (oldState, action) => {
     if (type === "postCreatorField") {
         newState["postCreatorField"] = action["fieldValue"];
     }
+    return newState;
 };
 
 export default uiReducer;
